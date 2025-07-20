@@ -27,10 +27,12 @@ public class GamePanel extends JPanel implements Runnable {
 	final int FPS = 60;
 	Thread gameThread;
 	Board board = new Board();
+	Mouse mouse = new Mouse();
 
 	// PIECES
 	public static ArrayList<Piece> pieces = new ArrayList<>();
 	public static ArrayList<Piece> simPieces = new ArrayList<>();
+	Piece activeP;
 
 	// COLOR
 	public static final int WHITE = 0;
@@ -42,6 +44,10 @@ public class GamePanel extends JPanel implements Runnable {
 	public GamePanel() {
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		setBackground(new Color(112, 95, 64));
+		
+		// Here we set the mouse reading part on game panel
+		addMouseMotionListener(mouse);
+		addMouseListener(mouse);
 
 		setPieces();
 		copyPieces(pieces, simPieces);
@@ -130,7 +136,18 @@ public class GamePanel extends JPanel implements Runnable {
 
 	// Handling updating
 	private void update() {
-
+		
+		if(mouse.pressed) {
+			if (activeP == null) {
+				for (Piece piece : simPieces) {
+					if (piece.color == currentColor && 
+							piece.col == (mouse.x - 50)/Board.SQUARE_SIZE &&
+							piece.row == (mouse.y - 50)/Board.SQUARE_SIZE) {
+						activeP = piece;
+					}
+				}
+			}
+		}
 	}
 
 	// method inherited from JComponent
