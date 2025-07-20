@@ -43,11 +43,26 @@ public class Piece {
 	}
 	
 	public int getX(int col) {
-		return col* Board.SQUARE_SIZE + 50;
+		return col * Board.SQUARE_SIZE + 50;
 	}
 	
 	public int getY(int row) {
-		return row* Board.SQUARE_SIZE + 50;
+		return row * Board.SQUARE_SIZE + 50;
+	}
+	
+	public int getCol(int x) {
+		return (x + 50 + Board.HALF_SQUARE_SIZE)/Board.SQUARE_SIZE;
+	}
+	
+	public int getRow(int y) {
+		return (y + 50 + Board.HALF_SQUARE_SIZE)/Board.SQUARE_SIZE;
+	}
+	
+	public void updatePosition() {
+		x = getX(col);
+		y = getY(row);
+		preCol = getCol(x);
+		preRow = getRow(y);
 	}
 	
 	public void draw(Graphics2D g2) {

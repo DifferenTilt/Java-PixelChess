@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -147,7 +148,30 @@ public class GamePanel extends JPanel implements Runnable {
 					}
 				}
 			}
+			else {
+				// If the player is holding a piece, simulate the move
+				simulate();
+			}
 		}
+		
+		// MOUSE BUTTON RELEASE
+		if (!mouse.pressed) {
+			if (activeP != null) {
+				activeP.updatePosition();
+				activeP = null;
+			}
+		}
+	}
+
+	private void simulate() {
+		
+		// If a piece is being held, update is position
+		activeP.x = mouse.x - Board.HALF_SQUARE_SIZE;
+		activeP.y = mouse.y - Board.HALF_SQUARE_SIZE;
+		activeP.col = activeP.getCol(activeP.x);
+		activeP.row = activeP.getRow(activeP.y);
+		
+		
 	}
 
 	// method inherited from JComponent
@@ -162,6 +186,18 @@ public class GamePanel extends JPanel implements Runnable {
 		// Draw pieces
 		for (Piece p : simPieces) {
 			p.draw(g2);
+		}
+		
+		// Color the square on which the piece is passing changing the opacity of the square
+		if (activeP != null) {
+			g2.setColor(Color.white);
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+			g2.fillRect(activeP.col * Board.SQUARE_SIZE - 50, activeP.row * Board.SQUARE_SIZE - 50, Board.SQUARE_SIZE,
+					Board.SQUARE_SIZE);
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+			
+			// Draw the active piece in the end so it won't be hidden 
+			activeP.draw(g2);
 		}
 	}
 

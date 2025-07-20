@@ -1,0 +1,6 @@
+x and y coordinates could be updated automatically adding 50 to x and y, this operation is global and 
+I don't have to do it by hand every single time
+
+-> Declare private all the member describing positions and in all the get method add + 50 
+
+the positioning should be chess like so program should understand e1 as a position.
